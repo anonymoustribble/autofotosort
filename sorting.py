@@ -2,6 +2,8 @@
 import os
 import shutil
 import time
+import platform
+from datetime import datetime
 
 #GET IMAGES FROM DIRECTORY
     
@@ -58,9 +60,9 @@ def createFolders(fileList, MONTHS):
     #initialize variables
     yearList = []
     
-    #check through first 4 chars of file, add to yearlist
+    #check through file years, add to yearlist
     for file in fileList:
-        year = file[0:4]
+        year, na = getExifData(file)
 
         if year not in yearList:
             yearList.append(year)
@@ -93,9 +95,8 @@ def sortPhotos(fileList, MONTHS):
 
         count += 1
 
-        #get year and month from filename
-        year = file[0:4]
-        monthNum = file[4:6]
+        #get year and month from exif data
+        year, monthNum = getExifData(file)
         month = MONTHS[int(monthNum)-1]
         
         #use shutil.move to move dat file!
@@ -114,6 +115,7 @@ def checkFiles(fileList, yearList):
     flag = False
     error = ""
 
+    """
     #ensure that first 6 chars of filename are numbers
     for file in fileList:
         try:
@@ -121,6 +123,7 @@ def checkFiles(fileList, yearList):
         except:
             flag = True
             error = "x2: invalid file name: " + file
+    """
 
     #get list of already existing year folders
     for year in yearList:
@@ -129,6 +132,7 @@ def checkFiles(fileList, yearList):
             existingYearList.append(year)
             print("> found directory "+str(year))
 
+    """
     #ensure that chars 4-6 are a valid month
     erroneousfilename = ""
     try:
@@ -142,6 +146,7 @@ def checkFiles(fileList, yearList):
     except:
         flag = True
         error = "x5: invalid file names" + erroneousfilename
+    """
 
     #if flag was set to true, then there is an error somewhere            
     if flag == True:
@@ -150,3 +155,35 @@ def checkFiles(fileList, yearList):
         exit()
 
     return existingYearList
+
+
+#GET DATE OF CREATION FOR A GIVEN FILE
+
+def getExifData(filename):
+
+    #Get current operating environment
+    SYSTEM = platform.system()
+
+    #If on Windows
+    if SYSTEM == "Windows": 
+        data = os.path.getmtime(filename)
+    
+    #If on MacOS
+    elif SYSTEM == "Darwin":
+        data = os.stat(filename).st_mtime # type: ignore
+            
+    #If on Linux
+    elif SYSTEM == "Linux":
+        data = os.stat(filename).st_mtime
+    
+    else:
+        print("> Warning! Unable to determine operating system. Date sorting may be inaccurate!")
+        data = os.stat(filename).st_mtime
+
+    #Convert unix time to month and year
+    month = datetime.utcfromtimestamp(data).strftime("%m")
+    year = datetime.utcfromtimestamp(data).strftime("%Y")
+
+    return year, month
+    
+    

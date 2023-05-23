@@ -1,21 +1,18 @@
 """
 AutoFotoSort (AFS)
-Version: 1.5
+Version: 2
 Created: Jan 6 2023
-Last Modified: Apr 21 2023
+Last Modified: May 23 2023
 (c) 2023 anonymoustribble
 """
 
 #IMPORT
-import os
-import shutil
 import time
-
 import sorting as sort
 
 #CONSTANTS
 YEAR = "2023"
-VERSION = "1.5"
+VERSION = "2"
 DIRECTORY_OVERRIDE = ""
 MONTHS = ("01-Jan", "02-Feb", "03-Mar", "04-Apr", "05-May", "06-Jun", "07-Jul", "08-Aug", "09-Sep", "10-Oct", "11-Nov", "12-Dec") 
 
