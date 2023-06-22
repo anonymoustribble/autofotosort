@@ -4,6 +4,8 @@ Version: 2
 Created: Jan 6 2023
 Last Modified: May 23 2023
 (c) 2023 anonymoustribble
+
+Image sorting made easy!
 """
 
 #IMPORT

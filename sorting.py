@@ -168,16 +168,8 @@ def getExifData(filename):
     if SYSTEM == "Windows": 
         data = os.path.getmtime(filename)
     
-    #If on MacOS
-    elif SYSTEM == "Darwin":
-        data = os.stat(filename).st_mtime # type: ignore
-            
-    #If on Linux
-    elif SYSTEM == "Linux":
-        data = os.stat(filename).st_mtime
-    
+    #If on MacOS or Linux
     else:
-        print("> Warning! Unable to determine operating system. Date sorting may be inaccurate!")
         data = os.stat(filename).st_mtime
 
     #Convert unix time to month and year
