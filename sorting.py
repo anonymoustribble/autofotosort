@@ -99,9 +99,12 @@ def sortPhotos(fileList, MONTHS):
         year, monthNum = getExifData(file)
         month = MONTHS[int(monthNum)-1]
         
-        #use shutil.move to move dat file!
-        shutil.move(file, year+"/"+month)
-        print("> move "+file)
+        #use shutil.move to move dat file! (and skip if it already exists!)
+        try:
+            shutil.move(file, year+"/"+month)
+            print("> move "+file)
+        except shutil.Error:
+            print("> error x6: Unable to move "+file+" because file already exists at destination. Skipping!")
         
     print("> moved "+str(count)+" files")
 
